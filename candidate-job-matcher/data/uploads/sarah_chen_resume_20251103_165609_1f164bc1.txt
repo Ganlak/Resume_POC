@@ -1,0 +1,94 @@
+SARAH CHEN
+Data Scientist
+
+Email: sarah.chen@email.com
+Phone: +1-555-234-5678
+Location: San Francisco, CA
+LinkedIn: linkedin.com/in/sarahchen
+GitHub: github.com/sarahchen
+
+PROFESSIONAL SUMMARY
+Data Scientist with 4+ years of experience building machine learning models and deriving 
+actionable insights from complex datasets. Expertise in Python, SQL, and modern ML frameworks. 
+Proven track record of deploying predictive models that drive business value.
+
+PROFESSIONAL EXPERIENCE
+
+Data Scientist | TechCorp Inc. | San Francisco, CA | 2021 - Present
+- Built customer churn prediction model using XGBoost achieving 85% accuracy, reducing churn by 15%
+- Developed recommendation engine using collaborative filtering serving 2M+ users daily
+- Designed and analyzed 20+ A/B tests to optimize product features and user engagement
+- Created real-time dashboards in Tableau for executive team monitoring key business metrics
+- Implemented NLP sentiment analysis pipeline processing 100K+ customer reviews
+- Collaborated with engineering team to deploy ML models on AWS SageMaker
+- Mentored 2 junior data scientists on ML best practices and model development
+
+Data Analyst | DataInsights Corp | San Francisco, CA | 2019 - 2021
+- Performed exploratory data analysis on large datasets (10M+ rows) using Pandas and SQL
+- Built predictive models for sales forecasting using time series analysis (ARIMA, Prophet)
+- Created data visualizations and reports for stakeholders using Matplotlib and Seaborn
+- Developed ETL pipelines to automate data processing workflows
+- Conducted statistical hypothesis testing to validate business hypotheses
+- Worked with PostgreSQL databases for data extraction and transformation
+
+TECHNICAL SKILLS
+
+Programming Languages:
+- Python (Expert): NumPy, Pandas, Scikit-learn, TensorFlow, PyTorch
+- SQL (Advanced): PostgreSQL, MySQL, Complex Queries, Query Optimization
+- R (Intermediate): Statistical Analysis, ggplot2
+
+Machine Learning:
+- Supervised Learning: Linear/Logistic Regression, Decision Trees, Random Forest, XGBoost, SVM
+- Deep Learning: Neural Networks, CNN, RNN, LSTM, Transfer Learning
+- Unsupervised Learning: K-means, PCA, Clustering
+- NLP: Text Classification, Sentiment Analysis, Word Embeddings, BERT
+- Model Deployment: Flask API, Docker, AWS SageMaker
+
+Data Tools & Visualization:
+- Libraries: Matplotlib, Seaborn, Plotly
+- BI Tools: Tableau, Looker
+- Big Data: Apache Spark (PySpark), Hive
+- Notebooks: Jupyter, Google Colab
+
+Cloud & Infrastructure:
+- AWS: EC2, S3, SageMaker, Lambda, RDS
+- Version Control: Git, GitHub, GitLab
+- Containers: Docker
+
+Statistics & Experimentation:
+- A/B Testing, Hypothesis Testing, Statistical Inference
+- Experimental Design, Causal Inference
+- Bayesian Statistics
+
+PROJECTS
+
+Customer Segmentation System
+- Developed K-means clustering model to segment 500K customers into 8 distinct groups
+- Enabled targeted marketing campaigns improving conversion rates by 25%
+- Technologies: Python, Scikit-learn, AWS
+
+Fraud Detection Model
+- Built anomaly detection system using Isolation Forest and Autoencoders
+- Reduced false positives by 40% compared to rule-based system
+- Technologies: TensorFlow, Python, SQL
+
+EDUCATION
+
+Master of Science in Data Science
+Stanford University | 2019
+- Focus: Machine Learning, Statistical Modeling, Big Data Analytics
+- GPA: 3.8/4.0
+
+Bachelor of Science in Computer Science
+UC Berkeley | 2017
+- Relevant Coursework: Machine Learning, Statistics, Algorithms, Databases
+
+CERTIFICATIONS
+- AWS Certified Machine Learning - Specialty (2022)
+- TensorFlow Developer Certificate (2021)
+- Deep Learning Specialization - Coursera (2020)
+
+PUBLICATIONS & TALKS
+- "Improving Recommendation Systems with Deep Learning" - Tech Conference 2022
+- Contributed to open-source ML libraries on GitHub (500+ stars)

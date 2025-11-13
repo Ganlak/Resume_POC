@@ -17,8 +17,7 @@ from typing import Tuple, Optional, Dict
 from langchain_community.document_loaders import (
     PyPDFLoader,
     Docx2txtLoader,
-    TextLoader,
-    UnstructuredFileLoader
+    TextLoader
 )
 
 # Validation
@@ -64,7 +63,48 @@ def parse_pdf_langchain(file_path: str) -> Tuple[bool, str, str]:
     
     except Exception as e:
         logger.error(f"Error parsing PDF with LangChain: {e}")
-        return False, "", str(e)
+        # Try fallback with PyPDF2 directly
+        return parse_pdf_fallback(file_path)
+
+
+def parse_pdf_fallback(file_path: str) -> Tuple[bool, str, str]:
+    """
+    Fallback PDF parser using PyPDF2 directly
+    
+    Args:
+        file_path: Path to PDF file
+        
+    Returns:
+        Tuple of (success, text_content, error_message)
+    """
+    try:
+        from PyPDF2 import PdfReader
+        
+        logger.info(f"Using PyPDF2 fallback for: {file_path}")
+        reader = PdfReader(file_path)
+        text_content = []
+        
+        for page_num, page in enumerate(reader.pages, 1):
+            try:
+                text = page.extract_text()
+                if text.strip():
+                    text_content.append(text)
+                    logger.debug(f"Extracted text from page {page_num}")
+            except Exception as e:
+                logger.warning(f"Could not extract text from page {page_num}: {e}")
+                continue
+        
+        full_text = "\n\n".join(text_content)
+        
+        if not full_text.strip():
+            return False, "", "No text content could be extracted from PDF"
+        
+        logger.info(f"Successfully parsed PDF with PyPDF2 fallback: {file_path}")
+        return True, full_text, ""
+        
+    except Exception as e:
+        logger.error(f"PyPDF2 fallback also failed: {e}")
+        return False, "", f"Failed to parse PDF: {str(e)}"
 
 
 def parse_docx_langchain(file_path: str) -> Tuple[bool, str, str]:
@@ -92,7 +132,50 @@ def parse_docx_langchain(file_path: str) -> Tuple[bool, str, str]:
     
     except Exception as e:
         logger.error(f"Error parsing DOCX with LangChain: {e}")
-        return False, "", str(e)
+        # Try fallback with python-docx directly
+        return parse_docx_fallback(file_path)
+
+
+def parse_docx_fallback(file_path: str) -> Tuple[bool, str, str]:
+    """
+    Fallback DOCX parser using python-docx directly
+    
+    Args:
+        file_path: Path to DOCX file
+        
+    Returns:
+        Tuple of (success, text_content, error_message)
+    """
+    try:
+        from docx import Document
+        
+        logger.info(f"Using python-docx fallback for: {file_path}")
+        doc = Document(file_path)
+        
+        # Extract all paragraphs
+        paragraphs = [para.text for para in doc.paragraphs if para.text.strip()]
+        
+        # Extract text from tables
+        table_text = []
+        for table in doc.tables:
+            for row in table.rows:
+                row_text = " | ".join([cell.text.strip() for cell in row.cells if cell.text.strip()])
+                if row_text:
+                    table_text.append(row_text)
+        
+        # Combine all text
+        all_text = paragraphs + table_text
+        full_text = "\n".join(all_text)
+        
+        if not full_text.strip():
+            return False, "", "No text content could be extracted from DOCX"
+        
+        logger.info(f"Successfully parsed DOCX with python-docx fallback: {file_path}")
+        return True, full_text, ""
+        
+    except Exception as e:
+        logger.error(f"python-docx fallback also failed: {e}")
+        return False, "", f"Failed to parse DOCX: {str(e)}"
 
 
 def parse_txt_langchain(file_path: str) -> Tuple[bool, str, str]:
@@ -130,34 +213,6 @@ def parse_txt_langchain(file_path: str) -> Tuple[bool, str, str]:
         return False, "", str(e)
 
 
-def parse_unstructured_fallback(file_path: str) -> Tuple[bool, str, str]:
-    """
-    Fallback parser using UnstructuredFileLoader
-    Handles various file types automatically
-    
-    Args:
-        file_path: Path to file
-        
-    Returns:
-        Tuple of (success, text_content, error_message)
-    """
-    try:
-        loader = UnstructuredFileLoader(file_path)
-        documents = loader.load()
-        
-        text_content = "\n\n".join([doc.page_content for doc in documents])
-        
-        if not text_content.strip():
-            return False, "", "No text content found"
-        
-        logger.info(f"Successfully parsed with UnstructuredFileLoader: {file_path}")
-        return True, text_content, ""
-    
-    except Exception as e:
-        logger.error(f"Error with UnstructuredFileLoader: {e}")
-        return False, "", str(e)
-
-
 # ==========================================
 # Main Document Parser
 # ==========================================
@@ -175,22 +230,15 @@ def parse_document(file_path: str, file_type: str) -> Tuple[bool, str, str]:
     """
     file_type = file_type.lower().strip('.')
     
-    # Try specific loader first
+    # Parse based on file type (with built-in fallbacks)
     if file_type == 'pdf':
-        success, text, error = parse_pdf_langchain(file_path)
+        return parse_pdf_langchain(file_path)
     elif file_type == 'docx':
-        success, text, error = parse_docx_langchain(file_path)
+        return parse_docx_langchain(file_path)
     elif file_type == 'txt':
-        success, text, error = parse_txt_langchain(file_path)
+        return parse_txt_langchain(file_path)
     else:
         return False, "", f"Unsupported file type: {file_type}"
-    
-    # If specific loader failed, try fallback
-    if not success or not text.strip():
-        logger.info(f"Primary parser failed, trying fallback for {file_path}")
-        success, text, error = parse_unstructured_fallback(file_path)
-    
-    return success, text, error
 
 
 # ==========================================
